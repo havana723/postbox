@@ -35,14 +35,7 @@ const MessageCard: React.FC<Props> = (props) => {
   return (
     <>
       <Card variant="outlined">
-        <Cardflex>
-          <CardCard variant="outlined">
-            <div>{name}</div>
-          </CardCard>
-          <CardCard variant="outlined">
-            <div>{contact}</div>
-          </CardCard>
-        </Cardflex>
+        <Cardflex>{name}</Cardflex>
         <Cardflex>
           <CardCard variant="outlined">
             <div style={{ wordBreak: "break-all" }}>{text}</div>
