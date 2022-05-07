@@ -2,7 +2,7 @@ import { Button, Card, TextField } from "@mui/material";
 import { addDoc, collection } from "firebase/firestore";
 import { useState } from "react";
 import styled from "styled-components";
-import db from "../firebase";
+import { db } from "../firebase";
 
 const Cardflex = styled.div`
   display: flex;

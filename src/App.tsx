@@ -3,9 +3,10 @@ import { collection, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import "./App.css";
+import Footer from "./components/footer";
 import InputCard from "./components/inputCard";
 import MessageCard from "./components/messageCard";
-import db from "./firebase";
+import { db } from "./firebase";
 
 export interface Message {
   name: string;
@@ -40,9 +41,6 @@ const Page = styled.div`
 
 function App() {
   const [state, setState] = useState<Messages | null>(null);
-  const [name, setName] = useState<string>("");
-  const [contact, setContact] = useState<string>("");
-  const [text, setText] = useState<string>("");
 
   useEffect(() => {
     (async () => {
@@ -73,6 +71,7 @@ function App() {
               <MessageCard message={message} />
             ))}
             <div style={{ height: "64px" }} />
+            <Footer />
           </Page>
         </div>
       </ThemeProvider>
