@@ -32,16 +32,30 @@ const CardCard = styled(Card)`
 const MessageCard: React.FC<Props> = (props) => {
   const { name, contact, text, deleted, date } = props.message;
 
+  const openDate = new Date("2021-07-23");
+
   return (
     <>
-      <Card variant="outlined">
-        <Cardflex>{name}</Cardflex>
-        <Cardflex>
-          <CardCard variant="outlined">
-            <div style={{ wordBreak: "break-all" }}>{text}</div>
-          </CardCard>
-        </Cardflex>
-      </Card>
+      {new Date() >= openDate ? (
+        <Card variant="outlined">
+          <Cardflex>{name}</Cardflex>
+          <Cardflex>
+            <CardCard variant="outlined">
+              <div style={{ wordBreak: "break-all" }}>{text}</div>
+            </CardCard>
+          </Cardflex>
+        </Card>
+      ) : (
+        <Card variant="outlined">
+          <Cardflex>
+            <CardCard variant="outlined">
+              <div style={{ wordBreak: "break-all" }}>
+                아직 볼 수 없는 메세지예요!
+              </div>
+            </CardCard>
+          </Cardflex>
+        </Card>
+      )}
     </>
   );
 };

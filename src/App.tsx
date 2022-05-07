@@ -1,14 +1,11 @@
 import { createMuiTheme, Divider, ThemeProvider } from "@mui/material";
-import axios from "axios";
-import { child, get, getDatabase, ref } from "firebase/database";
+import { collection, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import "./App.css";
 import InputCard from "./components/inputCard";
 import MessageCard from "./components/messageCard";
 import db from "./firebase";
-
-const baseURL = process.env.REACT_APP_API_ENDPOINT;
 
 export interface Message {
   name: string;
@@ -43,34 +40,20 @@ const Page = styled.div`
 
 function App() {
   const [state, setState] = useState<Messages | null>(null);
-  const [tmpstate, setTmpState] = useState<Messages | null>(null);
-
-  const database = db;
-  console.log(database);
-
-  const dbRef = ref(getDatabase());
-  get(child(dbRef, `messages`))
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        console.log(snapshot.val());
-      } else {
-        console.log("No data available");
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  const [name, setName] = useState<string>("");
+  const [contact, setContact] = useState<string>("");
+  const [text, setText] = useState<string>("");
 
   useEffect(() => {
-    axios
-      .get<Messages>("/messages", { baseURL })
-      .then((res) => {
-        setState(res.data);
-      })
-      .catch((err) => {
-        setState(null);
-        console.log(err);
+    (async () => {
+      const messagesDatabase = await getDocs(collection(db, "messages"));
+      const messages: Messages = { messages: [] };
+      messagesDatabase.forEach((doc) => {
+        console.log(doc.id, doc.data());
+        messages.messages.push(doc.data() as unknown as Message);
       });
+      setState(messages);
+    })();
   }, []);
 
   return state ? (
@@ -89,6 +72,7 @@ function App() {
             {state.messages.map((message) => (
               <MessageCard message={message} />
             ))}
+            <div style={{ height: "64px" }} />
           </Page>
         </div>
       </ThemeProvider>
