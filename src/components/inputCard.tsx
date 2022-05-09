@@ -35,7 +35,7 @@ const InputCard: React.FC = (props) => {
 
   return (
     <>
-      <Card variant="outlined" style={{ margin: "4px" }}>
+      <Card variant="outlined">
         <Cardflex>
           <TextField
             required

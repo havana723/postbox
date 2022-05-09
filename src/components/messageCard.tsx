@@ -37,28 +37,24 @@ const MessageCard: React.FC<Props> = (props) => {
   return (
     <>
       {new Date() >= openDate ? (
-        <div style={{ margin: "4px" }}>
-          <Card variant="outlined" style={{ margin: "4px" }}>
-            <Cardflex>{name}</Cardflex>
-            <Cardflex>
-              <CardCard variant="outlined">
-                <div style={{ wordBreak: "break-all" }}>{text}</div>
-              </CardCard>
-            </Cardflex>
-          </Card>
-        </div>
+        <Card variant="outlined">
+          <Cardflex>{name}</Cardflex>
+          <Cardflex>
+            <CardCard variant="outlined">
+              <div style={{ wordBreak: "break-all" }}>{text}</div>
+            </CardCard>
+          </Cardflex>
+        </Card>
       ) : (
-        <div style={{ margin: "4px" }}>
-          <Card variant="outlined">
-            <Cardflex>
-              <CardCard variant="outlined">
-                <div style={{ wordBreak: "break-all" }}>
-                  아직 볼 수 없는 메세지예요!
-                </div>
-              </CardCard>
-            </Cardflex>
-          </Card>
-        </div>
+        <Card variant="outlined">
+          <Cardflex>
+            <CardCard variant="outlined">
+              <div style={{ wordBreak: "break-all" }}>
+                아직 볼 수 없는 메세지예요!
+              </div>
+            </CardCard>
+          </Cardflex>
+        </Card>
       )}
     </>
   );

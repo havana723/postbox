@@ -44,7 +44,7 @@ const theme = createMuiTheme({
 });
 
 const Page = styled.div`
-  width: min(100vw, 600px);
+  width: min(100%, 600px);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -91,7 +91,7 @@ function App() {
   return state ? (
     <>
       <ThemeProvider theme={theme}>
-        <div style={{ backgroundColor: "#ebf0f0" }}>
+        <div style={{ backgroundColor: "#ebf0f0", padding: "4px" }}>
           <Page>
             <div style={{ height: "64px" }} />
             <h1 style={{ textAlign: "center" }}>메세지 남기기</h1>
