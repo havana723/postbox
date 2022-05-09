@@ -28,13 +28,14 @@ const InputCard: React.FC = (props) => {
         date: new Date(),
         deleted: false,
       });
+      window.location.reload();
       alert("등록되었습니다!");
     }
   }
 
   return (
     <>
-      <Card variant="outlined">
+      <Card variant="outlined" style={{ margin: "4px" }}>
         <Cardflex>
           <TextField
             required

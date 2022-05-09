@@ -1,5 +1,17 @@
-import { createMuiTheme, Divider, ThemeProvider } from "@mui/material";
-import { collection, getDocs } from "firebase/firestore";
+import {
+  createMuiTheme,
+  Divider,
+  Pagination,
+  ThemeProvider,
+} from "@mui/material";
+import {
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAt,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import "./App.css";
@@ -41,18 +53,40 @@ const Page = styled.div`
 
 function App() {
   const [state, setState] = useState<Messages | null>(null);
+  const [count, setCount] = useState(0);
+  const [page, setPage] = useState(1);
+  const PER_PAGE = 5;
+
+  async function getData() {
+    const messagesRef = await collection(db, "messages");
+
+    const snapshot = await getDocs(messagesRef);
+    setCount(Math.ceil(snapshot.size / PER_PAGE));
+
+    const orderQuery = await query(messagesRef, orderBy("date", "desc"));
+    const orderedDocs = await getDocs(orderQuery);
+    const lastDoc = orderedDocs.docs[(page - 1) * PER_PAGE];
+
+    const limitQuery = await query(
+      messagesRef,
+      orderBy("date", "desc"),
+      limit(PER_PAGE),
+      startAt(lastDoc)
+    );
+    const limitedDocs = await getDocs(limitQuery);
+
+    const messages: Messages = { messages: [] };
+
+    limitedDocs.forEach((doc) => {
+      messages.messages.push(doc.data() as unknown as Message);
+    });
+
+    setState(messages);
+  }
 
   useEffect(() => {
-    (async () => {
-      const messagesDatabase = await getDocs(collection(db, "messages"));
-      const messages: Messages = { messages: [] };
-      messagesDatabase.forEach((doc) => {
-        console.log(doc.id, doc.data());
-        messages.messages.push(doc.data() as unknown as Message);
-      });
-      setState(messages);
-    })();
-  }, []);
+    getData();
+  }, [page]);
 
   return state ? (
     <>
@@ -70,6 +104,13 @@ function App() {
             {state.messages.map((message) => (
               <MessageCard message={message} />
             ))}
+            <div style={{ height: "24px" }} />
+            <Pagination
+              count={count}
+              shape="rounded"
+              style={{ margin: "0 auto" }}
+              onChange={(e, p) => setPage(p)}
+            />
             <div style={{ height: "64px" }} />
             <Footer />
           </Page>
