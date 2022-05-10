@@ -11,6 +11,7 @@ import {
   orderBy,
   query,
   startAt,
+  where,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -58,18 +59,20 @@ function App() {
   const PER_PAGE = 5;
 
   async function getData() {
-    const messagesRef = await collection(db, "messages");
+    const rawMessagesRef = await collection(db, "messages");
+    const messagesRef = await query(
+      rawMessagesRef,
+      where("deleted", "==", false)
+    );
 
-    const snapshot = await getDocs(messagesRef);
-    setCount(Math.ceil(snapshot.size / PER_PAGE));
+    setCount(Math.ceil((await getDocs(messagesRef)).size / PER_PAGE));
 
     const orderQuery = await query(messagesRef, orderBy("date", "desc"));
     const orderedDocs = await getDocs(orderQuery);
     const lastDoc = orderedDocs.docs[(page - 1) * PER_PAGE];
 
     const limitQuery = await query(
-      messagesRef,
-      orderBy("date", "desc"),
+      orderQuery,
       limit(PER_PAGE),
       startAt(lastDoc)
     );

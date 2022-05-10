@@ -32,7 +32,7 @@ const CardCard = styled(Card)`
 const MessageCard: React.FC<Props> = (props) => {
   const { name, contact, text, deleted, date } = props.message;
 
-  const openDate = new Date("2021-07-23");
+  const openDate = new Date("2022-05-11");
 
   return (
     <>
@@ -47,10 +47,12 @@ const MessageCard: React.FC<Props> = (props) => {
         </Card>
       ) : (
         <Card variant="outlined">
+          <Cardflex>{name}</Cardflex>
           <Cardflex>
             <CardCard variant="outlined">
               <div style={{ wordBreak: "break-all" }}>
-                아직 볼 수 없는 메세지예요!
+                {openDate.getMonth() + 1}월 {openDate.getDate()}일에 공개되는
+                메세지예요!
               </div>
             </CardCard>
           </Cardflex>
